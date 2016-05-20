@@ -1,0 +1,32 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%%%%%%%%%%%%%%%%%Conjugate Gradient%%%%%%%%%%%%%%%%%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+x0 = ones(n,1); %initial guess 
+tol = 10^-6; %sets tolerance
+A1 = A*x0; %Matrix A multiplied by initial guess
+R = F -A1; %Computing R(0) by Force (B vector) subtracting A1 
+C = eye(n); %generic preconditioning matrix
+W = C*R; %initializing W(0)
+V = C'*W; %initializing V(1)
+k = 1; %Sets first step
+N = 200; % maximum number of iterations
+while k < N %the steps are less than the maximum
+if norm(V) < tol %the norm of initial V is less than tol break % We are done
+else %other wise do this instead
+U = A*V; %Sets U to be A*B
+w = dot(W,W); %Sets w to be inner product of W to be used to calc t(k)
+v = dot(V,A*V); %Sets v to be inner product of
+t = w/v; %Sets tk from notes
+x0 = x0 + t*V; %Updates x
+R = R - t*U; %Updates R
+W = C*R; %Updates w
+Beta = dot(W,W); %inner product of Wk
+if abs(Beta) < tol && norm(R) < tol %Stoping conditions
+break 
+else
+s = Beta/w; %Inner product w(k)/w(k-1)
+V = C'*W + s*V; %Updates V
+w = Beta; %Updates w
+k = k+1; %Updates k
+end
+if k > n break
+end end
+end
